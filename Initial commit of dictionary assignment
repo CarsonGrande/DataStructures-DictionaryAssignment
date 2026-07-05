@@ -1,0 +1,148 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        // Initialize an empty dictionary where the key is a string (e.g., Student Name)
+        // and the value is a List of strings (e.g., Courses they are taking)
+        Dictionary<string, List<string>> studentRecords = new Dictionary<string, List<string>>();
+
+        bool running = true;
+
+        while (running)
+        {
+            // Display User Menu
+            Console.WriteLine("\n--- Dictionary Management System ---");
+            Console.WriteLine("1. Populate Dictionary (Add Group Data)");
+            Console.WriteLine("2. Display Dictionary Contents");
+            Console.WriteLine("3. Remove a Key");
+            Console.WriteLine("4. Add a New Key and Value");
+            Console.WriteLine("5. Add a Value to an Existing Key");
+            Console.WriteLine("6. Sort the Keys");
+            Console.WriteLine("7. Exit");
+            Console.Write("Enter your choice (1-7): ");
+
+            string choice = Console.ReadLine();
+
+            // SWITCH STATEMENT IMPLEMENTATION
+            switch (choice)
+            {
+                case "1":
+                    // Task: Populate the Dictionary
+                    // Resetting dictionary to ensure fresh population as required by group choices
+                    studentRecords.Clear();
+                    studentRecords.Add("Alice", new List<string> { "Math", "Physics" });
+                    studentRecords.Add("Bob", new List<string> { "History" });
+                    studentRecords.Add("Charlie", new List<string> { "Chemistry", "Biology" });
+                    Console.WriteLine("Dictionary successfully populated with group's initial data!");
+                    break;
+
+                case "2":
+                    // Task: Display Dictionary Contents (Using Foreach Enumeration Method)
+                    if (studentRecords.Count == 0)
+                    {
+                        Console.WriteLine("The dictionary is empty. Populate it first.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("\n--- Current Dictionary Contents ---");
+                        foreach (KeyValuePair<string, List<string>> kvp in studentRecords)
+                        {
+                            string values = string.Join(", ", kvp.Value);
+                            Console.WriteLine($"Key (Student): {kvp.Key} -> Values (Classes): [{values}]");
+                        }
+                    }
+                    break;
+
+                case "3":
+                    // Task: Remove a Specified Key
+                    Console.Write("Enter the key (Student Name) you want to remove: ");
+                    string keyToRemove = Console.ReadLine();
+
+                    if (studentRecords.Remove(keyToRemove))
+                    {
+                        Console.WriteLine($"Successfully removed key: '{keyToRemove}'");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Key '{keyToRemove}' not found in the dictionary.");
+                    }
+                    break;
+
+                case "4":
+                    // Task: Add a New Key and Value
+                    Console.Write("Enter a new key (Student Name): ");
+                    string newKey = Console.ReadLine();
+
+                    if (studentRecords.ContainsKey(newKey))
+                    {
+                        Console.WriteLine("This key already exists. Use Option 5 to add values to it.");
+                    }
+                    else
+                    {
+                        Console.Write("Enter the initial value (Class Name): ");
+                        string newValue = Console.ReadLine();
+                        
+                        // Create a new list for this new key
+                        studentRecords.Add(newKey, new List<string> { newValue });
+                        Console.WriteLine($"Successfully added {newKey} with class {newValue}.");
+                    }
+                    break;
+
+                case "5":
+                    // Task: Add a Value to an Existing Key
+                    Console.Write("Enter the existing key (Student Name) to update: ");
+                    string existingKey = Console.ReadLine();
+
+                    if (studentRecords.ContainsKey(existingKey))
+                    {
+                        Console.Write("Enter the new value (Additional Class) to add: ");
+                        string appendValue = Console.ReadLine();
+                        
+                        // Append the value to the key's existing list
+                        studentRecords[existingKey].Add(appendValue);
+                        Console.WriteLine($"Successfully added '{appendValue}' to '{existingKey}'.");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Key '{existingKey}' does not exist.");
+                    }
+                    break;
+
+                case "6":
+                    // Task: Sort the Keys
+                    if (studentRecords.Count == 0)
+                    {
+                        Console.WriteLine("The dictionary is empty. Nothing to sort.");
+                    }
+                    else
+                    {
+                        // Extracting and sorting keys using LINQ orderby / SortedDictionary approach
+                        var sortedKeys = studentRecords.Keys.OrderBy(k => k).ToList();
+                        
+                        Console.WriteLine("\n--- Keys Sorted Alphabetically ---");
+                        foreach (var key in sortedKeys)
+                        {
+                            string values = string.Join(", ", studentRecords[key]);
+                            Console.WriteLine($"Key: {key} -> Values: [{values}]");
+                        }
+                    }
+                    break;
+
+                case "7":
+                    // Exit Strategy
+                    running = false;
+                    Console.WriteLine("Exiting program. Goodbye!");
+                    break;
+
+                default:
+                    // Error Handling for Invalid Inputs
+                    Console.WriteLine("Invalid selection. Please enter a number between 1 and 7.");
+                    break;
+            }
+        }
+    }
+}
