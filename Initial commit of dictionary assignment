@@ -112,7 +112,7 @@ class Program
                     }
                     break;
 
-                case "6":
+                        case "6":
                     // Task: Sort the Keys
                     if (studentRecords.Count == 0)
                     {
@@ -120,24 +120,31 @@ class Program
                     }
                     else
                     {
-                        // Extracting and sorting keys using LINQ orderby / SortedDictionary approach
+                        // Sort the keys alphabetically using LINQ
                         var sortedKeys = studentRecords.Keys.OrderBy(k => k).ToList();
-                        
+ 
                         Console.WriteLine("\n--- Keys Sorted Alphabetically ---");
-                        foreach (var key in sortedKeys)
+ 
+                        // Enumeration Method: explicit enumerator (different from the
+                        // foreach used in Option 2) - manually advances through the
+                        // sorted list using List<string>.Enumerator and MoveNext()
+                        List<string>.Enumerator sortedEnumerator = sortedKeys.GetEnumerator();
+                        while (sortedEnumerator.MoveNext())
                         {
+                            string key = sortedEnumerator.Current;
                             string values = string.Join(", ", studentRecords[key]);
                             Console.WriteLine($"Key: {key} -> Values: [{values}]");
                         }
+                        sortedEnumerator.Dispose();
                     }
                     break;
-
+ 
                 case "7":
                     // Exit Strategy
                     running = false;
                     Console.WriteLine("Exiting program. Goodbye!");
                     break;
-
+ 
                 default:
                     // Error Handling for Invalid Inputs
                     Console.WriteLine("Invalid selection. Please enter a number between 1 and 7.");
@@ -146,3 +153,4 @@ class Program
         }
     }
 }
+ 
